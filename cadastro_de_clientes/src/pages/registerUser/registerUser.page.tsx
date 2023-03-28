@@ -1,7 +1,7 @@
 import Logo from "../../components/logo/logo.components"
 import {RegisterUserPageHeader, RegisterUserPageMain} from "./style.page"
 import { Link } from "react-router-dom"
-import FormRegister from "../../models/formRegisterUser/formRegister"
+import FormRegister from "../../models/formRegisterUser/formRegister.model"
 
 const RegisterUserPage = () => {
 
