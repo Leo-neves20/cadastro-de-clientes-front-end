@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const RegisterUserPageHeader = styled.header`
+export const LoginUserPageHeader = styled.header`
 
     background-color: var(--white);
     border-bottom: 1px solid var(--secondary);
@@ -42,10 +42,9 @@ export const RegisterUserPageHeader = styled.header`
     }
 `
 
-export const RegisterUserPageMain = styled.main`
+export const LoginUserPageMain = styled.main`
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: var(--white);
-
 `
