@@ -32,6 +32,9 @@ const GlobalStyle = createGlobalStyle`
         width: 90px;
         transition: 0.3s;
         font-weight: 500;
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
         &:hover{
             background-color: var(--secondary);
@@ -46,6 +49,9 @@ const GlobalStyle = createGlobalStyle`
         width: 90px;
         transition: 0.3s;
         font-weight: 500;
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
         &:hover{
             background-color: var(--gray-2);

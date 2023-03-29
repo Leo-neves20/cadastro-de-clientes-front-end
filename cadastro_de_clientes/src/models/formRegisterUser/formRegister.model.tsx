@@ -173,7 +173,7 @@ const FormRegister = () => {
 
                 <button type="submit" className="button primary">CADASTRAR</button>
 
-                <button className="button secondary">Ir para Login</button>
+                <Link to={"/"} className="button secondary">Ir para Login</Link>
 
             </div>
 
