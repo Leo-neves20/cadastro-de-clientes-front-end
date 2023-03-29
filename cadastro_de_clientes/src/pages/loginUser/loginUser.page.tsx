@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"
 import Logo from "../../components/logo/logo.components"
 import FormLogin from "../../models/formLoginUser/loginUser.model"
 import { LoginUserPageHeader, LoginUserPageMain } from "./style.page"
@@ -9,7 +10,7 @@ const LoginUserPage = () => {
             <LoginUserPageHeader>
                 <div>
                     <Logo />
-                    <button className="button primary">Cadastro</button>
+                    <Link to={"/register"} className="button primary">Cadastro</Link>
                 </div>
             </LoginUserPageHeader>
             <LoginUserPageMain>

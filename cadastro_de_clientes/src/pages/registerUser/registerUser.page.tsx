@@ -10,7 +10,7 @@ const RegisterUserPage = () => {
             <RegisterUserPageHeader>
                 <div>
                     <Logo />
-                    <button className="button primary">Login</button>
+                    <Link to={"/"} className="button primary">Login</Link>
                 </div>
             </RegisterUserPageHeader>
             <RegisterUserPageMain>

@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form"
 import { UserLoginData } from "../../interface/user.interface";
 import schemaLoginUser from "../../schema/loginUser.schema";
 import { SubmitHandler } from "react-hook-form/dist/types"
+import { Link } from "react-router-dom";
 
 const FormLogin = () => {
 
@@ -87,7 +88,7 @@ const FormLogin = () => {
 
                 <button type="submit" className="button primary">ENTRAR</button>
 
-                <button className="button secondary">Ir para Cadastro</button>
+                <Link to={"/register"} className="button secondary">Ir para Cadastro</Link>
 
             </div>
 
