@@ -1,5 +1,5 @@
 import { Input, InputGroup, InputLeftElement, InputRightElement } from "@chakra-ui/react"
-import { useState } from "react"
+import { useContext, useState } from "react"
 import FormRegisterUser from "./style.model"
 import {VscEye, VscEyeClosed} from "react-icons/vsc"
 import {BsTelephone} from "react-icons/bs"
@@ -8,7 +8,8 @@ import { SubmitHandler } from "react-hook-form/dist/types"
 import { yupResolver } from '@hookform/resolvers/yup';
 import {Link} from "react-router-dom"
 import schemaRegisterUser from "../../schema/registerUser.schema"
-import { UserData } from "../../interface/user.interface"
+import { iUserData } from "../../interface/user.interface"
+import { contextObjAuthorization } from "../../context/authorization.context"
 
 const FormRegister = () => {
     
@@ -23,15 +24,17 @@ const FormRegister = () => {
         setConfirmPassword(!confirmPassword)
     }
 
-    const { register, handleSubmit, watch, formState: { errors } } = useForm<UserData>({
+    const { register, handleSubmit, watch, formState: { errors } } = useForm<iUserData>({
         resolver: yupResolver(schemaRegisterUser)
     });
 
-    const onSubmit: SubmitHandler<UserData> = (data: UserData) => {
+    const {registerRequest} = useContext(contextObjAuthorization)
+
+    const onSubmit: SubmitHandler<iUserData> = (data: iUserData) => {
 
         const {name, email, password, phone_number} = data
 
-        console.log({name, email, password, phone_number})
+        registerRequest({name, email, password, phone_number})
 
     };
     

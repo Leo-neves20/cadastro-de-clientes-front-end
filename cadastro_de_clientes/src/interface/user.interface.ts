@@ -1,4 +1,8 @@
-export interface UserData {
+export interface iChildren{
+    children: React.ReactNode
+}
+
+export interface iUserData {
     name: string,
 	email: string,
 	password: string,
@@ -6,7 +10,22 @@ export interface UserData {
 	phone_number: string
 }
 
-export interface UserLoginData{
+export interface iUserDataResponse{
+	id: string,
+    name: string,
+    email: string,
+    phone_number: string,
+    created_At: Date,
+}
+
+export interface iUserDataRequest{
+	name: string,
+	email: string,
+	password: string,
+	phone_number: string
+}
+
+export interface iUserLoginData{
 	email: string,
 	password: string
 }
