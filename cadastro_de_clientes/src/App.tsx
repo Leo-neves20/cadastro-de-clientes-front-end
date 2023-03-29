@@ -24,7 +24,6 @@ function App() {
         <GlobalStyle />
       </AutorizationContext>
     </>
-
   );
 }
 
