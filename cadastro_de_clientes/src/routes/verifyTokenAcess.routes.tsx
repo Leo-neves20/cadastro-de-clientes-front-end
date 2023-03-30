@@ -4,9 +4,9 @@ import {contextObjAuthorization} from "../context/authorization.context"
 
 const VerifyTokenAcess = () => {
 
-    const {user} = useContext(contextObjAuthorization)
+    const token = localStorage.getItem("@Token:")
 
-    return user ? <Outlet /> : <Navigate to={"/"} replace={true} /> 
+    return token ? <Outlet /> : <Navigate to="/" replace={true} /> 
 
 }
 

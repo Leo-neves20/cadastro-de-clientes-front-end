@@ -30,3 +30,9 @@ export interface iUserLoginData{
 	password: string
 }
 
+export interface iUserUpdate{
+    name?: string,
+    email?: string,
+    phone_number?: string,
+}
+

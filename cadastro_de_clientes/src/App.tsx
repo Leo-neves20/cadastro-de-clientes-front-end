@@ -3,6 +3,8 @@ import AllRoutes from "./routes/route.routes";
 import { ToastContainer } from "react-toastify";
 import AutorizationContext from "./context/authorization.context";
 import 'react-toastify/dist/ReactToastify.css';
+import DashUserPage from "./pages/dashboard/dashUser.pages";
+import DashBoardContext from "./context/dashboard.context";
 
 function App() {
   return (
@@ -20,8 +22,10 @@ function App() {
         theme="light"
       />
       <AutorizationContext>
-        <AllRoutes />
-        <GlobalStyle />
+        <DashBoardContext>
+          <AllRoutes />
+          <GlobalStyle />
+        </DashBoardContext>
       </AutorizationContext>
     </>
   );
