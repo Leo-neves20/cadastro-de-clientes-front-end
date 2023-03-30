@@ -1,18 +1,13 @@
-import Logo from "../../components/logo/logo.components"
-import {RegisterUserPageHeader, RegisterUserPageMain} from "./style.page"
-import { Link } from "react-router-dom"
+import {RegisterUserPageMain} from "./style.page"
 import FormRegister from "../../models/formRegisterUser/formRegister.model"
+import HeaderPage from "../../models/headerPage/headerPage.model"
 
 const RegisterUserPage = () => {
 
     return (
         <>
-            <RegisterUserPageHeader>
-                <div>
-                    <Logo />
-                    <Link to={"/"} className="button primary">Login</Link>
-                </div>
-            </RegisterUserPageHeader>
+            <HeaderPage to="/" buttonName="Login" />
+            
             <RegisterUserPageMain>
                 <FormRegister />
             </RegisterUserPageMain>

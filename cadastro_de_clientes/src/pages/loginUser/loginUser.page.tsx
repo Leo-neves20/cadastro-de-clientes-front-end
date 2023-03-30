@@ -1,24 +1,27 @@
-import { Link } from "react-router-dom"
-import Logo from "../../components/logo/logo.components"
 import FormLogin from "../../models/formLoginUser/loginUser.model"
-import { LoginUserPageHeader, LoginUserPageMain } from "./style.page"
+import HeaderPage from "../../models/headerPage/headerPage.model"
+import { LoginUserPageMain } from "./style.page"
+import {Navigate, useNavigate} from "react-router-dom"
+import {useContext, useEffect} from "react"
+import { contextObjAuthorization } from "../../context/authorization.context"
+import instance from "../../service/axios.service"
 
 const LoginUserPage = () => {
 
-    return(
+    const token = localStorage.getItem("@Token:")
+
+    return !token ? (
         <>
-            <LoginUserPageHeader>
-                <div>
-                    <Logo />
-                    <Link to={"/register"} className="button primary">Cadastro</Link>
-                </div>
-            </LoginUserPageHeader>
+            <HeaderPage to="/register"  buttonName="Cadastro"/>
+
             <LoginUserPageMain>
                 <FormLogin />
             </LoginUserPageMain>
         </>
     )
-
+    :
+    <Navigate to="/dashboard" replace/>
+    
 }
 
 export default LoginUserPage

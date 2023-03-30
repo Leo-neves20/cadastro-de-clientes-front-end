@@ -24,8 +24,6 @@ const AuthorizationContext = ({children}: iChildren) => {
 
     const [user, setUser] = useState<iUserDataResponse | null>(null)
 
-    console.log(user)
-
     const navigate = useNavigate()
 
     const loginRequest = async (loginData: iUserLoginData) => {
@@ -68,15 +66,17 @@ const AuthorizationContext = ({children}: iChildren) => {
 
             const token = localStorage.getItem("@Token:")
 
-            const listUser = await instance.get("/api/user/list", {
-                headers:{
-                    Authorization: `Bearer ${token}`
-                } 
-            })
+            instance.defaults.headers.authorization = `Bearer ${token}`
+
+            const listUser = await instance.get("/api/user/list")
 
             const user = listUser.data.find((user: { email: string; }) => user.email == loginData.email)
 
             setUser(user)
+
+            localStorage.setItem("@IdUser:", user.id)
+
+            navigate("/dashboard", {replace: true})
 
         }
 
