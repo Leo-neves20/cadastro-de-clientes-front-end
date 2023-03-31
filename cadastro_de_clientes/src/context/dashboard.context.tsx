@@ -4,9 +4,13 @@ import { toast } from "react-toastify"
 import {iChildren, iUserData, iUserDataResponse, iUserUpdate} from "../interface/user.interface"
 import instance from "../service/axios.service"
 import { contextObjAuthorization } from "./authorization.context"
+import pdfMake from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts";
+import { DynamicContent, TDocumentDefinitions } from "pdfmake/interfaces"
 
 interface iContext{
     updateUserRequest(dataUpdate: iUserUpdate): void
+    pfdGenerate(): void
 }
 
 export const contextObjDashboard = createContext({} as iContext)
@@ -94,9 +98,55 @@ const DashBoardContext = ({children}: iChildren) => {
 
     }
 
+    const pfdGenerate = async () => {
+
+        // contact_list.contacts.forEach(contact => {
+
+        //     const arr = []
+    
+        //     arr.push(contact.name)
+        //     arr.push(contact.email)
+        //     arr.push(contact.phone_number)
+    
+        //     contacts_Arr.push(arr)
+    
+        // })
+    
+
+        pdfMake.vfs = pdfFonts.pdfMake.vfs
+
+        const pdfTitle: any = [
+            {
+                text: 'CONTATOS',
+                fontSize: 20,
+			    bold: true,
+                margin: [0, 60, 0, 0],
+                alignment: "center"
+            }
+        ]
+
+        const datails: any = [
+            {
+                table:{
+                    width: ["*", "*", "*", "*"]
+                },
+                header: "headerLineOnly"
+            }
+        ]
+
+        const docConfig: TDocumentDefinitions = {
+            pageSize: "A4",
+            pageMargins: [20, 80, 20, 60],
+            header: [pdfTitle],
+            content: [datails],
+        }
+
+        pdfMake.createPdf(docConfig).open()
+
+    }
 
     return (
-        <contextObjDashboard.Provider value={{updateUserRequest}}>
+        <contextObjDashboard.Provider value={{updateUserRequest, pfdGenerate}}>
             {children}
         </contextObjDashboard.Provider>
     )

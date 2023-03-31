@@ -126,3 +126,44 @@ export const UserInformations = styled.section`
     }
 
 `
+export const SectionButtons = styled.section`
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+
+    div{
+
+        display: flex;
+        justify-content: space-between;
+        width: 88%;
+
+        .pdfButton, .createContactButtton{
+
+            color: var(--primary);
+            font-size: 1.563rem;
+            cursor: pointer;
+
+        }
+        
+    }
+
+    @media (min-width: 1000px){
+        height: 70px;
+
+        div{
+            .pdfButton, .createContactButtton{
+                color: var(--primary);
+                font-size: 1.9rem;
+            }
+        }
+    }
+
+    @media (min-width: 1330px){
+        div{
+            width: 1140px;
+        }
+    }
+
+`
