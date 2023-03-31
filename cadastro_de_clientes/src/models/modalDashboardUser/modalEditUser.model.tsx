@@ -50,66 +50,77 @@ const ModalEditUser = () => {
             onClose={onCloseUserSettings}
         >
 
-        <ModalOverlay />
+            <ModalOverlay />
 
-        <ModalContent onSubmit={handleSubmit(onSubmit)}>
+            <ModalContent onSubmit={handleSubmit(onSubmit)}>
 
-          <ModalHeader marginTop={5} fontSize={25}>Seus Dados</ModalHeader>
+                <ModalHeader marginTop={5} fontSize={25}>Seus Dados</ModalHeader>
 
-          <ModalCloseButton marginTop={5}/>
+                <ModalCloseButton marginTop={5}/>
 
-          <form className="containerFormUpdate">
+                <form className="containerFormUpdate">
 
-            <FormControl>
+                    <FormControl>
 
-              <FormLabel>Nome</FormLabel>
+                    <FormLabel>Nome</FormLabel>
 
-                <Input 
-                    placeholder='digite seu novo nome'
-                    focusBorderColor="color.secondary"
-                    defaultValue={user?.name}
-                    {...register("name")}
-                />
+                        <Input 
+                            placeholder='digite seu novo nome'
+                            focusBorderColor="color.secondary"
+                            defaultValue={user?.name}
+                            {...register("name")}
+                        />
 
-            </FormControl>
+                    </FormControl>
 
-            <FormControl mt={4}>
+                    <FormControl mt={4}>
 
-                <FormLabel>Email</FormLabel>
+                        <FormLabel>Email</FormLabel>
 
-                <Input 
-                    placeholder='digite seu novo Email'
-                    focusBorderColor="color.secondary"
-                    defaultValue={user?.email}
-                    {...register("email")}
-                />
+                        <Input 
+                            placeholder='digite seu novo Email'
+                            focusBorderColor="color.secondary"
+                            defaultValue={user?.email}
+                            {...register("email")}
+                        />
 
-            </FormControl>
+                        </FormControl>
 
-            <FormControl mt={4}>
+                    <FormControl mt={4}>
 
-                <FormLabel>Número de telefone</FormLabel>
+                        <FormLabel>Número de telefone</FormLabel>
 
-                <Input 
-                    placeholder='Digite seu novo número de telefone'
-                    focusBorderColor="color.secondary"
-                    defaultValue={user?.phone_number}
-                    {...register("phone_number")}
-                />
+                        <Input 
+                            placeholder='Digite seu novo número de telefone'
+                            focusBorderColor="color.secondary"
+                            defaultValue={user?.phone_number}
+                            {...register("phone_number")}
+                        />
 
-            </FormControl>
+                    </FormControl>
 
-            <ModalFooter marginTop={7} marginBottom={5}>
+                    <ModalFooter marginTop={7} marginBottom={5}>
 
-                <Button type="submit" backgroundColor="color.primary" color="white" mr={3}>
-                    Salvar
-                </Button>
+                        <Button 
+                            type="submit" 
+                            backgroundColor="color.primary" 
+                            color="white" 
+                            mr={3}
+                        >
+                            Salvar
+                        </Button>
 
-                <Button colorScheme='red' type="button" onClick={onCloseUserSettings}>Excluir</Button>
+                        <Button 
+                            colorScheme='red' 
+                            type="button" 
+                            onClick={onCloseUserSettings}
+                        >
+                            Excluir
+                        </Button>
 
-            </ModalFooter>
+                    </ModalFooter>
 
-          </form>
+                </form>
 
         </ModalContent>
 
