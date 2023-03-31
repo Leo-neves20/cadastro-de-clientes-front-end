@@ -4,70 +4,83 @@ import {
     FormLabel, 
     Input, 
     Modal, 
+    ModalBody, 
     ModalCloseButton, 
     ModalContent, 
     ModalFooter, 
     ModalHeader, 
-    ModalOverlay
+    ModalOverlay, 
+    useDisclosure 
 } from "@chakra-ui/react"
+import React, { useContext, useEffect, useState } from "react"
 import { SubmitHandler } from "react-hook-form/dist/types"
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from "react-hook-form"
-import schemaUpdateUser from "../../schema/updateUser.schema";
-import {iUserUpdate} from "../../interface/user.interface"
-import React, { useContext} from "react"
-import {contextObjDashboard} from "../../context/dashboard.context"
-import { contextObjAuthorization } from "../../context/authorization.context";
-   
-const ModalEditUser = () => {
+import schemaUpdateContact from "../../schema/updateContact.schema";
+import { contextObjDashboard } from "../../context/dashboard.context";
+import { iContactResponse } from "../tableDash/tableContacts.model";
+import { iUserDataResponse } from "../../interface/user.interface";
+
+interface iContactUpdate{
+    name?: string,
+    email?: string,
+    phone_number?: string,
+}
+
+const ModelEditContact = ({name, email, phone_number, id}: any) => {
 
     const initialRef = React.useRef(null)
     const finalRef = React.useRef(null)
 
-    const { register, handleSubmit, watch, formState: { errors } } = useForm<iUserUpdate>({
-        resolver: yupResolver(schemaUpdateUser)
+    const { register, handleSubmit, watch, formState: { errors } } = useForm<iContactUpdate>({
+        resolver: yupResolver(schemaUpdateContact),
     });
+    
+    const onSubmit: SubmitHandler<iContactUpdate> = (data: iContactUpdate) => {
+        console.log(data)
+    };
 
     const {
-        updateUserRequest, 
-        isOpenUserSettings, 
-        onCloseUserSettings, 
-        onOpenUserSettings
+        contactSelected, 
+        isOpenContactEdit, 
+        onCloseContactEdit, 
+        onOpenContactEdit,
+        setContactSelected
     } = useContext(contextObjDashboard)
 
-    const {user, setUser} = useContext(contextObjAuthorization)
+    let contactData: any = {}
 
-    const onSubmit: SubmitHandler<iUserUpdate> = (data: iUserUpdate) => {
-        updateUserRequest(data)
-    };
-  
+    useEffect(() => {
+        contactData = contactSelected
+        console.log(contactData)
+    }, [contactSelected])
+ 
     return (
-
+        <>
         <Modal
             initialFocusRef={initialRef}
             finalFocusRef={finalRef}
-            isOpen={isOpenUserSettings}
-            onClose={onCloseUserSettings}
+            isOpen={isOpenContactEdit}
+            onClose={onCloseContactEdit}
         >
 
         <ModalOverlay />
 
         <ModalContent onSubmit={handleSubmit(onSubmit)}>
 
-          <ModalHeader marginTop={5} fontSize={25}>Seus Dados</ModalHeader>
+            <ModalHeader marginTop={5} fontSize={25}>Seus Dados</ModalHeader>
 
-          <ModalCloseButton marginTop={5}/>
+            <ModalCloseButton marginTop={5}/>
 
-          <form className="containerFormUpdate">
+            <form className="containerFormUpdate">
 
             <FormControl>
-
-              <FormLabel>Nome</FormLabel>
+                <FormLabel>Nome</FormLabel>
 
                 <Input 
                     placeholder='digite seu novo nome'
                     focusBorderColor="color.secondary"
-                    defaultValue={user?.name}
+                    defaultValue={contactSelected?.name}
                     {...register("name")}
                 />
 
@@ -80,7 +93,7 @@ const ModalEditUser = () => {
                 <Input 
                     placeholder='digite seu novo Email'
                     focusBorderColor="color.secondary"
-                    defaultValue={user?.email}
+                    defaultValue={contactSelected?.email}
                     {...register("email")}
                 />
 
@@ -93,7 +106,7 @@ const ModalEditUser = () => {
                 <Input 
                     placeholder='Digite seu novo número de telefone'
                     focusBorderColor="color.secondary"
-                    defaultValue={user?.phone_number}
+                    defaultValue={contactSelected?.phone_number}
                     {...register("phone_number")}
                 />
 
@@ -105,18 +118,19 @@ const ModalEditUser = () => {
                     Salvar
                 </Button>
 
-                <Button colorScheme='red' type="button" onClick={onCloseUserSettings}>Excluir</Button>
+                <Button colorScheme='gray' type="button" onClick={onCloseContactEdit}>Sair</Button>
 
             </ModalFooter>
 
-          </form>
+            </form>
 
         </ModalContent>
 
-      </Modal>
+        </Modal>
+        </>
 
     )
-
+   
 }
 
-export default ModalEditUser
+export default ModelEditContact

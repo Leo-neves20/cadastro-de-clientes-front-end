@@ -1,12 +1,24 @@
+import { useDisclosure } from "@chakra-ui/react"
 import axios from "axios"
-import { createContext, useContext } from "react"
+import { createContext, useContext, useEffect, useState } from "react"
 import { toast } from "react-toastify"
 import {iChildren, iUserData, iUserDataResponse, iUserUpdate} from "../interface/user.interface"
+import { iContactResponse } from "../models/tableDash/tableContacts.model"
 import instance from "../service/axios.service"
 import { contextObjAuthorization } from "./authorization.context"
 
 interface iContext{
     updateUserRequest(dataUpdate: iUserUpdate): void
+    contacts: iUserDataResponse[]
+    isOpenUserSettings:  any
+    onOpenUserSettings:  any
+    onCloseUserSettings: any
+    isOpenContactEdit:   any
+    onOpenContactEdit:   any 
+    onCloseContactEdit:  any
+    contactSelected: iContactResponse | undefined
+    setContactSelected: React.Dispatch<React.SetStateAction<iContactResponse | undefined>>
+    editContact(id: number): void
 }
 
 export const contextObjDashboard = createContext({} as iContext)
@@ -15,6 +27,46 @@ const DashBoardContext = ({children}: iChildren) => {
 
     const {user, setUser} = useContext(contextObjAuthorization)
     const token = localStorage.getItem("@Token:")
+
+    const [contacts, setContacts] = useState<iUserDataResponse[]>([])
+    const [contactSelected, setContactSelected] = useState<iContactResponse | undefined>(undefined)
+
+    const { 
+        isOpen: isOpenUserSettings, 
+        onOpen: onOpenUserSettings, 
+        onClose: onCloseUserSettings 
+    } = useDisclosure()
+
+    const { 
+        isOpen: isOpenContactEdit, 
+        onOpen: onOpenContactEdit, 
+        onClose: onCloseContactEdit 
+    } = useDisclosure()
+
+    const editContact = (id: number) => {
+
+        const findContact = contacts.find(contac => +contac.id == +id)
+        
+        setContactSelected(findContact!)
+        
+        onOpenContactEdit()
+        
+    }
+
+    const contactList = async () => {
+
+        const response = await instance.get("/api/contact/list", {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+
+        setContacts(response.data.contacts)
+    }
+
+    useEffect(() => {
+        contactList()
+    }, [])
 
     const updateUserRequest = async (dataUpdate: iUserUpdate) => {
 
@@ -94,9 +146,20 @@ const DashBoardContext = ({children}: iChildren) => {
 
     }
 
-
     return (
-        <contextObjDashboard.Provider value={{updateUserRequest}}>
+        <contextObjDashboard.Provider value={{
+            updateUserRequest, 
+            contacts,
+            isOpenUserSettings, 
+            onOpenUserSettings, 
+            onCloseUserSettings,
+            isOpenContactEdit,
+            onOpenContactEdit, 
+            onCloseContactEdit,
+            contactSelected, 
+            setContactSelected,
+            editContact
+        }}>
             {children}
         </contextObjDashboard.Provider>
     )
