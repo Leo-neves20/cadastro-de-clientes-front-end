@@ -1,5 +1,5 @@
 import HeaderPage from "../../models/headerPage/headerPage.model"
-import { DashUserPageMain, UserInformations } from "./style.page"
+import { SectionButtons, UserInformations, DashUserPageMain } from "./style.page"
 import {BsGear} from "react-icons/bs"
 import {RiUserLine} from "react-icons/ri"
 import {useContext, useEffect} from "react"
@@ -9,6 +9,8 @@ import { Navigate } from "react-router-dom"
 import instance from "../../service/axios.service"
 import { useDisclosure } from "@chakra-ui/react"
 import ModalEditUser from "../../models/modalDashboardUser/modalEditUser.model"
+import {AiFillFilePdf} from "react-icons/ai"
+import {FaUserPlus} from "react-icons/fa"
 import TableContacts from "../../models/tableDash/tableContacts.model"
 import ModelEditContact from "../../models/modalDashboardUser/modalEditContact.model"
 
@@ -23,6 +25,8 @@ const DashUserPage = () => {
     } = useContext(contextObjDashboard)
 
     const {user, setUser} = useContext(contextObjAuthorization)
+    const {pfdGenerate} = useContext(contextObjDashboard)
+
     
     const getUser = async () => {
 
@@ -58,6 +62,13 @@ const DashUserPage = () => {
                     <BsGear className="userConfigIcon" onClick={onOpenUserSettings}/>
                 </div>
             </UserInformations>
+            <SectionButtons >
+                <div>
+                    <AiFillFilePdf className="pdfButton" onClick={() => pfdGenerate()} />
+                    <FaUserPlus className="createContactButtton"/>
+                </div>
+            </SectionButtons>
+            <ModalEditUser  />
             <ModalEditUser />
             <DashUserPageMain>
                 <TableContacts />

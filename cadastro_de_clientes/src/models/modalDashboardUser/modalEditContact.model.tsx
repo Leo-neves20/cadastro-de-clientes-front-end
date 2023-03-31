@@ -27,7 +27,7 @@ interface iContactUpdate{
     phone_number?: string,
 }
 
-const ModelEditContact = ({name, email, phone_number, id}: any) => {
+const ModelEditContact = () => {
 
     const initialRef = React.useRef(null)
     const finalRef = React.useRef(null)
@@ -44,89 +44,79 @@ const ModelEditContact = ({name, email, phone_number, id}: any) => {
         contactSelected, 
         isOpenContactEdit, 
         onCloseContactEdit, 
-        onOpenContactEdit,
-        setContactSelected
     } = useContext(contextObjDashboard)
 
-    let contactData: any = {}
-
-    useEffect(() => {
-        contactData = contactSelected
-        console.log(contactData)
-    }, [contactSelected])
- 
     return (
         <>
-        <Modal
-            initialFocusRef={initialRef}
-            finalFocusRef={finalRef}
-            isOpen={isOpenContactEdit}
-            onClose={onCloseContactEdit}
-        >
+            <Modal
+                initialFocusRef={initialRef}
+                finalFocusRef={finalRef}
+                isOpen={isOpenContactEdit}
+                onClose={onCloseContactEdit}
+            >
 
-        <ModalOverlay />
+            <ModalOverlay />
 
-        <ModalContent onSubmit={handleSubmit(onSubmit)}>
+            <ModalContent onSubmit = {handleSubmit(onSubmit)}>
 
-            <ModalHeader marginTop={5} fontSize={25}>Seus Dados</ModalHeader>
+                <ModalHeader marginTop = {5} fontSize={25}>Seus Dados</ModalHeader>
 
-            <ModalCloseButton marginTop={5}/>
+                <ModalCloseButton marginTop={5}/>
 
-            <form className="containerFormUpdate">
+                <form className="containerFormUpdate">
 
-            <FormControl>
-                <FormLabel>Nome</FormLabel>
+                <FormControl>
 
-                <Input 
-                    placeholder='digite seu novo nome'
-                    focusBorderColor="color.secondary"
-                    defaultValue={contactSelected?.name}
-                    {...register("name")}
-                />
+                    <FormLabel>Nome</FormLabel>
 
-            </FormControl>
+                    <Input 
+                        placeholder={contactSelected?.name}
+                        focusBorderColor="color.secondary"
+                        {...register("name")}
+                    />
 
-            <FormControl mt={4}>
+                </FormControl>
 
-                <FormLabel>Email</FormLabel>
+                <FormControl mt={4}>
 
-                <Input 
-                    placeholder='digite seu novo Email'
-                    focusBorderColor="color.secondary"
-                    defaultValue={contactSelected?.email}
-                    {...register("email")}
-                />
+                    <FormLabel>Email</FormLabel>
 
-            </FormControl>
+                    <Input 
+                        placeholder = {contactSelected?.email}
+                        focusBorderColor = "color.secondary"
+                        {...register("email")}
+                    />
 
-            <FormControl mt={4}>
+                </FormControl>
 
-                <FormLabel>Número de telefone</FormLabel>
+                <FormControl mt={4}>
 
-                <Input 
-                    placeholder='Digite seu novo número de telefone'
-                    focusBorderColor="color.secondary"
-                    defaultValue={contactSelected?.phone_number}
-                    {...register("phone_number")}
-                />
+                    <FormLabel>Número de telefone</FormLabel>
 
-            </FormControl>
+                    <Input 
+                        placeholder={contactSelected?.phone_number}
+                        focusBorderColor="color.secondary"
+                        {...register("phone_number")}
+                    />
 
-            <ModalFooter marginTop={7} marginBottom={5}>
+                </FormControl>
 
-                <Button type="submit" backgroundColor="color.primary" color="white" mr={3}>
-                    Salvar
-                </Button>
+                <ModalFooter marginTop={7} marginBottom={5}>
 
-                <Button colorScheme='gray' type="button" onClick={onCloseContactEdit}>Sair</Button>
+                    <Button type="submit" backgroundColor="color.primary" color="white" mr={3}>
+                        Salvar
+                    </Button>
 
-            </ModalFooter>
+                    <Button colorScheme='gray' type="button" onClick={onCloseContactEdit}>Sair</Button>
 
-            </form>
+                </ModalFooter>
 
-        </ModalContent>
+                </form>
 
-        </Modal>
+            </ModalContent>
+
+            </Modal>
+
         </>
 
     )
