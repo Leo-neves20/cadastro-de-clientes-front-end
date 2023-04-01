@@ -3,15 +3,9 @@ import Logo from "../../components/logo/logo.components"
 import { contextObjAuthorization } from "../../context/authorization.context"
 import { Header } from "./style.model"
 import {useContext} from "react"
+import { iPropsHeader } from "../../interface/dashBoard.interface"
 
-interface iPorpsHeader{
-    to: string
-    buttonName: string
-}
-
-
-
-const HeaderPage = ({to, buttonName}: iPorpsHeader) => {
+const HeaderPage = ({to, buttonName}: iPropsHeader) => {
     
     const {setUser} = useContext(contextObjAuthorization)
 

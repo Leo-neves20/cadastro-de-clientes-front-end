@@ -12,8 +12,8 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 interface iContextInterface{
-    loginRequest(loginData: iUserLoginData): void
-    registerRequest(registerData: iUserDataRequest): void
+    onLogin(loginData: iUserLoginData): void
+    onRegister(registerData: iUserDataRequest): void
     user: iUserDataResponse | null
     setUser: React.Dispatch<React.SetStateAction<iUserDataResponse | null>>
 }
@@ -26,7 +26,7 @@ const AuthorizationContext = ({children}: iChildren) => {
 
     const navigate = useNavigate()
 
-    const loginRequest = async (loginData: iUserLoginData) => {
+    const onLogin = async (loginData: iUserLoginData) => {
 
         try {
             
@@ -82,7 +82,7 @@ const AuthorizationContext = ({children}: iChildren) => {
 
     }
 
-    const registerRequest = async(registerData: iUserDataRequest) => {
+    const onRegister = async(registerData: iUserDataRequest) => {
 
         try {
 
@@ -123,8 +123,8 @@ const AuthorizationContext = ({children}: iChildren) => {
 
     return (
         <contextObjAuthorization.Provider value={{
-            loginRequest, 
-            registerRequest, 
+            onLogin, 
+            onRegister, 
             user, 
             setUser
         }}>
