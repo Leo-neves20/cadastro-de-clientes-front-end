@@ -7,12 +7,11 @@ import {contextObjAuthorization} from "../../context/authorization.context"
 import {contextObjDashboard} from "../../context/dashboard.context"
 import { Navigate } from "react-router-dom"
 import instance from "../../service/axios.service"
-import { useDisclosure } from "@chakra-ui/react"
 import ModalEditUser from "../../models/modalDashboardUser/modalEditUser.model"
 import {AiFillFilePdf} from "react-icons/ai"
 import {FaUserPlus} from "react-icons/fa"
 import TableContacts from "../../models/tableDash/tableContacts.model"
-import ModelEditContact from "../../models/modalDashboardUser/modalEditContact.model"
+import ModalDeleteUser from "../../models/modalDashboardUser/modelDeleteUser.model"
 
 const DashUserPage = () => {
 
@@ -69,6 +68,7 @@ const DashUserPage = () => {
                 </div>
             </SectionButtons>
             <ModalEditUser  />
+            <ModalDeleteUser />
             <DashUserPageMain>
                 <TableContacts />
             </DashUserPageMain>

@@ -32,7 +32,10 @@ const ModalEditUser = () => {
         updateUserRequest, 
         isOpenUserSettings, 
         onCloseUserSettings, 
-        onOpenUserSettings
+        onOpenUserSettings,
+        onOpenUserDelete,
+        setOverlay,
+        deleteUserAccount
     } = useContext(contextObjDashboard)
 
     const {user, setUser} = useContext(contextObjAuthorization)
@@ -40,7 +43,13 @@ const ModalEditUser = () => {
     const onSubmit: SubmitHandler<iUserUpdate> = (data: iUserUpdate) => {
         updateUserRequest(data)
     };
-  
+
+    const openModelDelete = () => {
+        onCloseUserSettings()
+        console.log()
+        onOpenUserDelete()
+    }
+   
     return (
 
         <Modal
@@ -105,7 +114,9 @@ const ModalEditUser = () => {
                     Salvar
                 </Button>
 
-                <Button colorScheme='red' type="button" onClick={onCloseUserSettings}>Excluir</Button>
+                <Button colorScheme='red' type="button" onClick={() => {
+                    deleteUserAccount()
+                }}>Excluir</Button>
 
             </ModalFooter>
 

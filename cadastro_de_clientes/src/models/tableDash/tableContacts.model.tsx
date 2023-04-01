@@ -7,6 +7,7 @@ import {IoTrashOutline} from "react-icons/io5"
 import ModelEditContact from "../modalDashboardUser/modalEditContact.model"
 import ModalDeleteContact from "../modalDashboardUser/modelDeleteContact.model"
 import ModalCreateContact from "../modalDashboardUser/modalCreateContact.model"
+import ModalDeleteUser from "../modalDashboardUser/modelDeleteUser.model"
 
 export interface iContactResponse{
     id: string,
@@ -69,6 +70,7 @@ const TableContacts = () => {
         <ModalCreateContact />
         <ModelEditContact />
         <ModalDeleteContact />
+        <ModalDeleteUser />
         </>
     )
 

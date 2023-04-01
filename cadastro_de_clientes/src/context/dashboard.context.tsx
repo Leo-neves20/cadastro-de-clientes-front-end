@@ -11,6 +11,7 @@ import pdfFonts from "pdfmake/build/vfs_fonts";
 import { DynamicContent, TDocumentDefinitions } from "pdfmake/interfaces"
 import {ModalOverlay} from "@chakra-ui/react"
 import { iContactCreate } from "../models/modalDashboardUser/modalCreateContact.model"
+import {useNavigate} from "react-router-dom"
 
 interface iContext{
     updateUserRequest(dataUpdate: iUserUpdate): void
@@ -37,6 +38,12 @@ interface iContext{
     onOpenContactCreate: any
     onCloseContactCreate: any
     createContact(data: iContactCreate): void
+    isOpenUserDelete: any
+    onOpenUserDelete: any
+    onCloseUserDelete: any
+    deleteUser(): void
+    deleteUserAccount(): void
+
 }
 
 export const contextObjDashboard = createContext({} as iContext)
@@ -45,9 +52,12 @@ const DashBoardContext = ({children}: iChildren) => {
 
     const {user, setUser} = useContext(contextObjAuthorization)
     const token = localStorage.getItem("@Token:")
+    const id = localStorage.getItem("@IdUser:")
 
     const [contacts, setContacts] = useState<iUserDataResponse[]>([])
     const [contactSelected, setContactSelected] = useState<iContactResponse | undefined>(undefined)
+
+    const navigate = useNavigate()
 
     const { 
         isOpen: isOpenUserSettings, 
@@ -73,6 +83,12 @@ const DashBoardContext = ({children}: iChildren) => {
         onClose: onCloseContactCreate 
     } = useDisclosure()
 
+    const { 
+        isOpen: isOpenUserDelete, 
+        onOpen: onOpenUserDelete, 
+        onClose: onCloseUserDelete 
+    } = useDisclosure()
+
     const OverlayOne = () => (
         <ModalOverlay
           bg='blackAlpha.300'
@@ -81,6 +97,11 @@ const DashBoardContext = ({children}: iChildren) => {
     )
 
     const [overlay, setOverlay] = useState(<OverlayOne />)
+    
+    const deleteUserAccount = () => {
+        onCloseUserSettings()
+        onOpenUserDelete()
+    }
 
     const editContact = (id: number) => {
 
@@ -195,8 +216,55 @@ const DashBoardContext = ({children}: iChildren) => {
 
     }
 
-    const deleteUser = () => {
-        
+    const deleteUser = async () => {
+
+        try {
+
+            if(user){
+
+                instance.defaults.headers.authorization = `Bearer ${token}`
+    
+                await instance.delete(`/api/user/delete/${user.id}`)
+    
+                toast.success("Usuário deletado com sucesso", {
+                    position: "top-right",
+                    autoClose: 1000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+    
+                navigate("/", {replace: true})
+    
+                setUser(null)
+    
+                localStorage.clear()
+            }
+
+        } catch (error) {
+
+            if(axios.isAxiosError(error)){
+
+                console.log(error)
+
+                toast.error(error.response?.data, {
+                    position: "top-right",
+                    autoClose: 1000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light"
+                });
+
+            }
+            
+        }
+
     }
 
     const createContact = async (data: iContactCreate) => {
@@ -426,7 +494,12 @@ const DashBoardContext = ({children}: iChildren) => {
             isOpenContactCreate,
             onOpenContactCreate,
             onCloseContactCreate,
-            createContact
+            createContact,
+            isOpenUserDelete,
+            onOpenUserDelete,
+            onCloseUserDelete,
+            deleteUser,
+            deleteUserAccount
         }}>
             {children}
         </contextObjDashboard.Provider>)
