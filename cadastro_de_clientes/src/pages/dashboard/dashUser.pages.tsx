@@ -25,7 +25,7 @@ const DashUserPage = () => {
     } = useContext(contextObjDashboard)
 
     const {user, setUser} = useContext(contextObjAuthorization)
-    const {pfdGenerate} = useContext(contextObjDashboard)
+    const {pfdGenerate, onOpenContactCreate} = useContext(contextObjDashboard)
 
     
     const getUser = async () => {
@@ -65,7 +65,7 @@ const DashUserPage = () => {
             <SectionButtons >
                 <div>
                     <AiFillFilePdf className="pdfButton" onClick={() => pfdGenerate()} />
-                    <FaUserPlus className="createContactButtton"/>
+                    <FaUserPlus className="createContactButtton" onClick={onOpenContactCreate}/>
                 </div>
             </SectionButtons>
             <ModalEditUser  />

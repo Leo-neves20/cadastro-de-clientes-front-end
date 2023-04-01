@@ -10,6 +10,7 @@ import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 import { DynamicContent, TDocumentDefinitions } from "pdfmake/interfaces"
 import {ModalOverlay} from "@chakra-ui/react"
+import { iContactCreate } from "../models/modalDashboardUser/modalCreateContact.model"
 
 interface iContext{
     updateUserRequest(dataUpdate: iUserUpdate): void
@@ -32,6 +33,10 @@ interface iContext{
     onCloseContactDelete: any
     deleteContact(): void
     getContactDelete(id: number): void
+    isOpenContactCreate: any
+    onOpenContactCreate: any
+    onCloseContactCreate: any
+    createContact(data: iContactCreate): void
 }
 
 export const contextObjDashboard = createContext({} as iContext)
@@ -60,6 +65,12 @@ const DashBoardContext = ({children}: iChildren) => {
         isOpen: isOpenContactDelete, 
         onOpen: onOpenContactDelete, 
         onClose: onCloseContactDelete 
+    } = useDisclosure()
+
+    const { 
+        isOpen: isOpenContactCreate, 
+        onOpen: onOpenContactCreate, 
+        onClose: onCloseContactCreate 
     } = useDisclosure()
 
     const OverlayOne = () => (
@@ -180,6 +191,53 @@ const DashBoardContext = ({children}: iChildren) => {
             const user = listUser.data.find((user: { id: string; }) => user.id == id)
     
             setUser(user)
+        }
+
+    }
+
+    const deleteUser = () => {
+        
+    }
+
+    const createContact = async (data: iContactCreate) => {
+
+        try {
+
+            instance.defaults.headers.authorization = `Bearer ${token}`
+
+            await instance.post("/api/contact/register", data)
+
+            toast.success("Registrado com sucesso", {
+                position: "top-right",
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+
+            
+        } catch (error) {
+
+            if(axios.isAxiosError(error)){
+
+                toast.error(error.response?.data, {
+                    position: "top-right",
+                    autoClose: 1000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light"
+                });
+
+            }
+
+        }finally{
+            contactList()
         }
 
     }
@@ -342,7 +400,11 @@ const DashBoardContext = ({children}: iChildren) => {
             onOpenContactDelete, 
             onCloseContactDelete,
             deleteContact,
-            getContactDelete
+            getContactDelete,
+            isOpenContactCreate,
+            onOpenContactCreate,
+            onCloseContactCreate,
+            createContact
         }}>
             {children}
         </contextObjDashboard.Provider>)
