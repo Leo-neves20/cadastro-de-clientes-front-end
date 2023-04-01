@@ -1,16 +1,37 @@
+import { useDisclosure } from "@chakra-ui/react"
 import axios from "axios"
-import { createContext, useContext } from "react"
+import { createContext, useContext, useEffect, useState } from "react"
 import { toast } from "react-toastify"
 import {iChildren, iUserData, iUserDataResponse, iUserUpdate} from "../interface/user.interface"
+import { iContactResponse } from "../models/tableDash/tableContacts.model"
 import instance from "../service/axios.service"
 import { contextObjAuthorization } from "./authorization.context"
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 import { DynamicContent, TDocumentDefinitions } from "pdfmake/interfaces"
+import {ModalOverlay} from "@chakra-ui/react"
 
 interface iContext{
     updateUserRequest(dataUpdate: iUserUpdate): void
+    contacts: iUserDataResponse[]
+    isOpenUserSettings:  any
+    onOpenUserSettings:  any
+    onCloseUserSettings: any
+    isOpenContactEdit:   any
+    onOpenContactEdit:   any 
+    onCloseContactEdit:  any
+    contactSelected: iContactResponse | undefined
+    setContactSelected: React.Dispatch<React.SetStateAction<iContactResponse | undefined>>
+    editContact(id: number): void
+    updataContact(data: iUserDataResponse): void
     pfdGenerate(): void
+    overlay: any
+    setOverlay: React.Dispatch<React.SetStateAction<any>>
+    isOpenContactDelete: any
+    onOpenContactDelete: any 
+    onCloseContactDelete: any
+    deleteContact(): void
+    getContactDelete(id: number): void
 }
 
 export const contextObjDashboard = createContext({} as iContext)
@@ -19,6 +40,71 @@ const DashBoardContext = ({children}: iChildren) => {
 
     const {user, setUser} = useContext(contextObjAuthorization)
     const token = localStorage.getItem("@Token:")
+
+    const [contacts, setContacts] = useState<iUserDataResponse[]>([])
+    const [contactSelected, setContactSelected] = useState<iContactResponse | undefined>(undefined)
+
+    const { 
+        isOpen: isOpenUserSettings, 
+        onOpen: onOpenUserSettings, 
+        onClose: onCloseUserSettings 
+    } = useDisclosure()
+
+    const { 
+        isOpen: isOpenContactEdit, 
+        onOpen: onOpenContactEdit, 
+        onClose: onCloseContactEdit 
+    } = useDisclosure()
+
+    const { 
+        isOpen: isOpenContactDelete, 
+        onOpen: onOpenContactDelete, 
+        onClose: onCloseContactDelete 
+    } = useDisclosure()
+
+    const OverlayOne = () => (
+        <ModalOverlay
+          bg='blackAlpha.300'
+          backdropFilter='blur(10px) hue-rotate(90deg)'
+        />
+    )
+
+    const [overlay, setOverlay] = useState(<OverlayOne />)
+
+    const editContact = (id: number) => {
+
+        const findContact = contacts.find(contac => +contac.id == +id)
+        
+        setContactSelected(findContact!)
+        
+        onOpenContactEdit()
+        
+    }
+
+    const getContactDelete = (id: number) => {
+
+        const findContact = contacts.find(contac => +contac.id == +id)
+        
+        setContactSelected(findContact!)
+        
+        onOpenContactDelete()
+    
+    }
+
+    const contactList = async () => {
+
+        const response = await instance.get("/api/contact/list", {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+
+        setContacts(response.data.contacts)
+    }
+
+    useEffect(() => {
+        contactList()
+    }, [])
 
     const updateUserRequest = async (dataUpdate: iUserUpdate) => {
 
@@ -98,6 +184,96 @@ const DashBoardContext = ({children}: iChildren) => {
 
     }
 
+    const updataContact = async (data: iUserDataResponse) => {
+
+        try {
+            
+            instance.defaults.headers.authorization = `Bearer ${token}`
+
+            await instance.patch(`/api/contact/update/${contactSelected?.id}`, data)
+
+            toast.success("Contato atualizado com sucesso", {
+                position: "top-right",
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+
+        } catch (error) {
+
+            if(axios.isAxiosError(error)){
+
+                console.log(error)
+
+                toast.error(error.response?.data, {
+                    position: "top-right",
+                    autoClose: 1000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light"
+                });
+
+            }
+            
+        }finally{
+            contactList()
+            setContactSelected(data)
+        }
+    }
+
+    const deleteContact = async () => {
+
+        try {
+            
+            instance.defaults.headers.authorization = `Bearer ${token}`
+
+            await instance.delete(`/api/contact/delete/${contactSelected?.id}`)
+
+            toast.success("Contato deletado com sucesso", {
+                position: "top-right",
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+
+        } catch (error) {
+
+            if(axios.isAxiosError(error)){
+
+                console.log(error)
+
+                toast.error(error.response?.data, {
+                    position: "top-right",
+                    autoClose: 1000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light"
+                });
+
+            }
+            
+        }finally{
+            contactList()
+            setContactSelected(undefined)
+            onCloseContactDelete()
+        }
+
+    }
+
     const pfdGenerate = async () => {
 
         // contact_list.contacts.forEach(contact => {
@@ -141,16 +317,36 @@ const DashBoardContext = ({children}: iChildren) => {
             content: [datails],
         }
 
-        pdfMake.createPdf(docConfig).open()
+        pdfMake.createPdf(docConfig).download()
 
     }
 
     return (
-        <contextObjDashboard.Provider value={{updateUserRequest, pfdGenerate}}>
+        <contextObjDashboard.Provider value={{
+            updateUserRequest, 
+            contacts,
+            isOpenUserSettings, 
+            onOpenUserSettings, 
+            onCloseUserSettings,
+            isOpenContactEdit,
+            onOpenContactEdit, 
+            onCloseContactEdit,
+            contactSelected, 
+            setContactSelected,
+            editContact,
+            updataContact,
+            pfdGenerate,
+            overlay,
+            setOverlay,
+            isOpenContactDelete, 
+            onOpenContactDelete, 
+            onCloseContactDelete,
+            deleteContact,
+            getContactDelete
+        }}>
             {children}
-        </contextObjDashboard.Provider>
-    )
-
+        </contextObjDashboard.Provider>)
+    
 }
 
 export default DashBoardContext

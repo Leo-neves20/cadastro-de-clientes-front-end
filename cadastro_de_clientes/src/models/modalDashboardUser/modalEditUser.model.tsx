@@ -4,25 +4,22 @@ import {
     FormLabel, 
     Input, 
     Modal, 
-    ModalBody, 
     ModalCloseButton, 
     ModalContent, 
     ModalFooter, 
     ModalHeader, 
-    ModalOverlay, 
-    useDisclosure 
+    ModalOverlay
 } from "@chakra-ui/react"
 import { SubmitHandler } from "react-hook-form/dist/types"
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from "react-hook-form"
 import schemaUpdateUser from "../../schema/updateUser.schema";
 import {iUserUpdate} from "../../interface/user.interface"
-import React, { useContext, useEffect } from "react"
+import React, { useContext} from "react"
 import {contextObjDashboard} from "../../context/dashboard.context"
 import { contextObjAuthorization } from "../../context/authorization.context";
-import instance from "../../service/axios.service";
    
-const ModalEditUser = ({isOpen, onOpen, onClose}: any) => {
+const ModalEditUser = () => {
 
     const initialRef = React.useRef(null)
     const finalRef = React.useRef(null)
@@ -31,7 +28,13 @@ const ModalEditUser = ({isOpen, onOpen, onClose}: any) => {
         resolver: yupResolver(schemaUpdateUser)
     });
 
-    const {updateUserRequest} = useContext(contextObjDashboard) 
+    const {
+        updateUserRequest, 
+        isOpenUserSettings, 
+        onCloseUserSettings, 
+        onOpenUserSettings
+    } = useContext(contextObjDashboard)
+
     const {user, setUser} = useContext(contextObjAuthorization)
 
     const onSubmit: SubmitHandler<iUserUpdate> = (data: iUserUpdate) => {
@@ -43,8 +46,8 @@ const ModalEditUser = ({isOpen, onOpen, onClose}: any) => {
         <Modal
             initialFocusRef={initialRef}
             finalFocusRef={finalRef}
-            isOpen={isOpen}
-            onClose={onClose}
+            isOpen={isOpenUserSettings}
+            onClose={onCloseUserSettings}
         >
 
         <ModalOverlay />
@@ -102,7 +105,7 @@ const ModalEditUser = ({isOpen, onOpen, onClose}: any) => {
                     Salvar
                 </Button>
 
-                <Button colorScheme='red' type="button" onClick={onClose}>Eexcluir</Button>
+                <Button colorScheme='red' type="button" onClick={onCloseUserSettings}>Excluir</Button>
 
             </ModalFooter>
 

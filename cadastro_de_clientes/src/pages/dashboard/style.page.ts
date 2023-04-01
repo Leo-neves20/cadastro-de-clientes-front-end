@@ -71,6 +71,7 @@ export const UserInformations = styled.section`
         .userConfigIcon{
             font-size: 22px;
             transition: 0.5s;
+            cursor: pointer;
 
             &:hover{
                 color: var(--secondary);
@@ -125,6 +126,21 @@ export const UserInformations = styled.section`
         }
     }
 
+`
+
+export const DashUserPageMain = styled.main`
+    display: flex;
+    background-color: var(--white);
+    overflow-x: scroll;
+    width: 100%;
+
+    ::-webkit-scrollbar {
+        width: 0px;
+    }
+
+    @media (min-width: 1300px){
+        justify-content: center;
+    }
 `
 export const SectionButtons = styled.section`
 

@@ -1,27 +1,33 @@
 import HeaderPage from "../../models/headerPage/headerPage.model"
-import { SectionButtons, UserInformations } from "./style.page"
+import { SectionButtons, UserInformations, DashUserPageMain } from "./style.page"
 import {BsGear} from "react-icons/bs"
 import {RiUserLine} from "react-icons/ri"
 import {useContext, useEffect} from "react"
 import {contextObjAuthorization} from "../../context/authorization.context"
+import {contextObjDashboard} from "../../context/dashboard.context"
 import { Navigate } from "react-router-dom"
 import instance from "../../service/axios.service"
 import { useDisclosure } from "@chakra-ui/react"
 import ModalEditUser from "../../models/modalDashboardUser/modalEditUser.model"
 import {AiFillFilePdf} from "react-icons/ai"
 import {FaUserPlus} from "react-icons/fa"
-import { contextObjDashboard } from "../../context/dashboard.context"
+import TableContacts from "../../models/tableDash/tableContacts.model"
+import ModelEditContact from "../../models/modalDashboardUser/modalEditContact.model"
 
 const DashUserPage = () => {
 
     const token = localStorage.getItem("@Token:")
     const id = localStorage.getItem("@IdUser:")
 
-    const { isOpen, onOpen, onClose } = useDisclosure()
+    const { 
+        onOpenUserSettings,
+        onOpenContactEdit
+    } = useContext(contextObjDashboard)
 
     const {user, setUser} = useContext(contextObjAuthorization)
     const {pfdGenerate} = useContext(contextObjDashboard)
 
+    
     const getUser = async () => {
 
         const listUser = await instance.get("/api/user/list", {
@@ -53,7 +59,7 @@ const DashUserPage = () => {
                         <span className="email"><strong>Email:</strong> {user.email}</span>
                         <span className="phoneNumber"><strong>Tel:</strong> {user.phone_number}</span>
                     </div>
-                    <BsGear className="userConfigIcon" onClick={onOpen}/>
+                    <BsGear className="userConfigIcon" onClick={onOpenUserSettings}/>
                 </div>
             </UserInformations>
             <SectionButtons >
@@ -62,7 +68,10 @@ const DashUserPage = () => {
                     <FaUserPlus className="createContactButtton"/>
                 </div>
             </SectionButtons>
-            <ModalEditUser  isOpen={isOpen} onOpen={onOpen} onClose={onClose}/>
+            <ModalEditUser  />
+            <DashUserPageMain>
+                <TableContacts />
+            </DashUserPageMain>
         </>
     )
     :
