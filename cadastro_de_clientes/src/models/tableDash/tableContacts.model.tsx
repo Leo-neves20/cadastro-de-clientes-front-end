@@ -6,6 +6,7 @@ import {GoPencil} from "react-icons/go"
 import {IoTrashOutline} from "react-icons/io5"
 import ModelEditContact from "../modalDashboardUser/modalEditContact.model"
 import ModalDeleteContact from "../modalDashboardUser/modelDeleteContact.model"
+import ModalCreateContact from "../modalDashboardUser/modalCreateContact.model"
 
 export interface iContactResponse{
     id: string,
@@ -65,6 +66,7 @@ const TableContacts = () => {
                 }
             </tbody>
         </Table>
+        <ModalCreateContact />
         <ModelEditContact />
         <ModalDeleteContact />
         </>
