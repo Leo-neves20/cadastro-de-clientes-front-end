@@ -1,12 +1,11 @@
 import { Input, InputGroup, InputRightElement } from "@chakra-ui/react"
-
 import { useContext, useState } from "react"
 import {VscEye, VscEyeClosed} from "react-icons/vsc"
 import FormLoginUser from "./style.model"
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from "react-hook-form"
 import { iUserLoginData } from "../../interface/user.interface";
-import schemaLoginUser from "../../schema/loginUser.schema";
+import schemaLoginUser from "../../schema/user/loginUser.schema";
 import { SubmitHandler } from "react-hook-form/dist/types"
 import { Link } from "react-router-dom";
 import {contextObjAuthorization} from "../../context/authorization.context";
@@ -23,11 +22,11 @@ const FormLogin = () => {
         resolver: yupResolver(schemaLoginUser)
     });
 
-    const {loginRequest} = useContext(contextObjAuthorization)
+    const {onLogin} = useContext(contextObjAuthorization)
 
     const onSubmit: SubmitHandler<iUserLoginData> = (data: iUserLoginData) => {
     
-        loginRequest(data)
+        onLogin(data)
 
     };
 

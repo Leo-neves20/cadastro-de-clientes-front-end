@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form"
 import { SubmitHandler } from "react-hook-form/dist/types"
 import { yupResolver } from '@hookform/resolvers/yup';
 import {Link} from "react-router-dom"
-import schemaRegisterUser from "../../schema/registerUser.schema"
+import schemaRegisterUser from "../../schema/user/registerUser.schema"
 import { iUserData } from "../../interface/user.interface"
 import { contextObjAuthorization } from "../../context/authorization.context"
 
@@ -28,13 +28,13 @@ const FormRegister = () => {
         resolver: yupResolver(schemaRegisterUser)
     });
 
-    const {registerRequest} = useContext(contextObjAuthorization)
+    const {onRegister} = useContext(contextObjAuthorization)
 
     const onSubmit: SubmitHandler<iUserData> = (data: iUserData) => {
 
         const {name, email, password, phone_number} = data
 
-        registerRequest({name, email, password, phone_number})
+        onRegister({name, email, password, phone_number})
 
     };
     
