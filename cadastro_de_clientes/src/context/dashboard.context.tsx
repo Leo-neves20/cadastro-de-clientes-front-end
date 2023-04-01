@@ -334,48 +334,70 @@ const DashBoardContext = ({children}: iChildren) => {
 
     const pfdGenerate = async () => {
 
-        // contact_list.contacts.forEach(contact => {
+        const contacts_Arr: Array<string[]> = []
 
-        //     const arr = []
+        contacts.forEach(contact => {
+
+            const arr = []
     
-        //     arr.push(contact.name)
-        //     arr.push(contact.email)
-        //     arr.push(contact.phone_number)
+            arr.push(contact.name)
+            arr.push(contact.email)
+            arr.push(contact.phone_number)
     
-        //     contacts_Arr.push(arr)
+            contacts_Arr.push(arr)
     
-        // })
+        })
     
 
         pdfMake.vfs = pdfFonts.pdfMake.vfs
 
-        const pdfTitle: any = [
-            {
-                text: 'CONTATOS',
-                fontSize: 20,
-			    bold: true,
-                margin: [0, 60, 0, 0],
-                alignment: "center"
-            }
-        ]
-
-        const datails: any = [
-            {
-                table:{
-                    width: ["*", "*", "*", "*"]
-                },
-                header: "headerLineOnly"
-            }
-        ]
-
         const docConfig: TDocumentDefinitions = {
             pageSize: "A4",
-            pageMargins: [20, 80, 20, 60],
-            header: [pdfTitle],
-            content: [datails],
+            pageMargins: [50, 80, 50, 60],
+            header: [[
+                { 
+                    text: 'CONTATOS', 
+                    bold: true,
+                    fontSize: 25,
+                    alignment: "center",
+                    margin: [0, 50, 0, 40],
+                    
+                }
+            ]],
+            content: [[
+                {
+                    table:{
+                        widths: ["*", "*", "*"],
+                        body:[
+                            [
+                                {text: "Nome", style: "header" }, 
+                                {text: "email", style: "header" }, 
+                                {text: "Número de telefone", style: "header"}
+                            ],
+                            ...contacts_Arr
+                        ],
+                
+                    },
+                    margin: [0, 60, 0, 0],
+                    
+                    layout: {
+                        fillColor: function (rowIndex, node, columnIndex) {
+                            return ( rowIndex % 2 === 1) ? '#7c92a657' : null;
+                        }
+                    }
+                }  
+            ]],
+            styles:{
+                header:{
+                    bold: true, 
+                    fontSize: 14, 
+                    fillColor: "#263640", 
+                    color: "white"
+                }
+            }
         }
 
-        pdfMake.createPdf(docConfig).download()
+        pdfMake.createPdf(docConfig).open()
 
     }
 
