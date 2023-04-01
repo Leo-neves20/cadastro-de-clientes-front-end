@@ -5,6 +5,7 @@ import {Table} from "./style"
 import {GoPencil} from "react-icons/go"
 import {IoTrashOutline} from "react-icons/io5"
 import ModelEditContact from "../modalDashboardUser/modalEditContact.model"
+import ModalDeleteContact from "../modalDashboardUser/modelDeleteContact.model"
 
 export interface iContactResponse{
     id: string,
@@ -19,8 +20,8 @@ const TableContacts = () => {
     const {
         contacts,
         editContact,
-        contactSelected,
-        onOpenContactEdit
+        onOpenContactEdit, 
+        getContactDelete
     } = useContext(contextObjDashboard)
 
     const teste = () => {
@@ -53,7 +54,7 @@ const TableContacts = () => {
                                             onClick={() => {editContact(+contact.id)}}
                                         />
                                         <IoTrashOutline 
-                                            onClick={() => {}}  
+                                            onClick={() => {getContactDelete(+contact.id)}}  
                                             className="deleteContactButton"
                                         />
                                     </div>
@@ -64,12 +65,8 @@ const TableContacts = () => {
                 }
             </tbody>
         </Table>
-        <ModelEditContact 
-            name={contactSelected?.name} 
-            email={contactSelected?.email} 
-            phone_number={contactSelected?.phone_number}
-            id={contactSelected?.id}
-        />
+        <ModelEditContact />
+        <ModalDeleteContact />
         </>
     )
 

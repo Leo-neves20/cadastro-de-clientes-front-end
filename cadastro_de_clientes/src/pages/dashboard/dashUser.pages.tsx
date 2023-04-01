@@ -69,7 +69,6 @@ const DashUserPage = () => {
                 </div>
             </SectionButtons>
             <ModalEditUser  />
-            <ModalEditUser />
             <DashUserPageMain>
                 <TableContacts />
             </DashUserPageMain>

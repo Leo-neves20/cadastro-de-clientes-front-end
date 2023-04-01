@@ -32,19 +32,40 @@ const ModelEditContact = () => {
     const initialRef = React.useRef(null)
     const finalRef = React.useRef(null)
 
-    const { register, handleSubmit, watch, formState: { errors } } = useForm<iContactUpdate>({
+    const { register, handleSubmit, watch, formState: { errors }, reset } = useForm<iContactUpdate>({
         resolver: yupResolver(schemaUpdateContact),
+        defaultValues: {
+            name: "",
+            email: "",
+            phone_number: "",
+        }
     });
     
-    const onSubmit: SubmitHandler<iContactUpdate> = (data: iContactUpdate) => {
-        console.log(data)
-    };
-
     const {
         contactSelected, 
         isOpenContactEdit, 
-        onCloseContactEdit, 
+        onCloseContactEdit,
+        updataContact
     } = useContext(contextObjDashboard)
+
+    const onSubmit: SubmitHandler<iContactUpdate> = (data: iContactUpdate) => {
+
+        if(data.name){
+            updataContact({...contactSelected!, name: data.name})
+        }
+
+        if(data.email){
+            updataContact({...contactSelected!, email: data.email})
+        }
+
+        if(data.phone_number){
+            updataContact({...contactSelected!, phone_number: data.phone_number})
+        }
+
+        reset()
+
+    };
+
 
     return (
         <>
@@ -57,13 +78,13 @@ const ModelEditContact = () => {
 
             <ModalOverlay />
 
-            <ModalContent onSubmit = {handleSubmit(onSubmit)}>
+            <ModalContent>
 
                 <ModalHeader marginTop = {5} fontSize={25}>Seus Dados</ModalHeader>
 
                 <ModalCloseButton marginTop={5}/>
 
-                <form className="containerFormUpdate">
+                <form className="containerFormUpdate" onSubmit = {handleSubmit(onSubmit)}>
 
                 <FormControl>
 
